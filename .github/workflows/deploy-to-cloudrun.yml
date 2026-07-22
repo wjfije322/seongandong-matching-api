@@ -10,7 +10,7 @@ env:
   REGION: asia-northeast3
   REPOSITORY: udnsjnd
   SERVICE_NAME: seongandong-matching-api
-  IMAGE: asia-northeast3-docker.pkg.dev/seongandong-matching-service-00003-28t/udnsjnd/seongandong-matching-api:latest
+  IMAGE: asia-northeast3-docker.pkg.dev/seongandong-matching-api/udnsjnd/seongandong-matching-api:latest
 
 jobs:
   build-and-deploy:
