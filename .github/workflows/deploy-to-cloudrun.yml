@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  PROJECT_ID: seongandong-matching-service-00003-28t
+  PROJECT_ID: seongandong-matching-api
   REGION: asia-northeast3
   REPOSITORY: udnsjnd
   SERVICE_NAME: seongandong-matching-api
