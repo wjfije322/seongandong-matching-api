@@ -1,0 +1,53 @@
+name: Build and Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  PROJECT_ID: seongandong-matching-service-00003-28t
+  REGION: asia-northeast3
+  REPOSITORY: udnsjnd
+  SERVICE_NAME: seongandong-matching-api
+  IMAGE: asia-northeast3-docker.pkg.dev/seongandong-matching-service-00003-28t/udnsjnd/seongandong-matching-api:latest
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 1. Docker 이미지 빌드
+      - name: Build Docker image
+        run: |
+          docker build -t $IMAGE .
+
+      # 2. GCP 로그인 (서비스 계정 키 사용)
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+
+      # 3. Artifact Registry 푸시 설정
+      - name: Configure Docker to use gcloud
+        run: |
+          gcloud auth configure-docker ${REGION}-docker.pkg.dev
+
+      # 4. 이미지 푸시
+      - name: Push image
+        run: |
+          docker push $IMAGE
+
+      # 5. Cloud Run 배포
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy $SERVICE_NAME \
+            --image $IMAGE \
+            --region $REGION \
+            --platform managed \
+            --allow-unauthenticated
