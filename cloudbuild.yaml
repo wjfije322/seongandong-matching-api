@@ -1,0 +1,42 @@
+steps:
+  # 1. Docker 이미지 빌드
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'asia-northeast3-docker.pkg.dev/seongandong-matching-service-00003-28t/udnsjnd/seongandong-matching-api:latest',
+        '.'
+      ]
+
+  # 2. Artifact Registry로 푸시
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'push',
+        'asia-northeast3-docker.pkg.dev/seongandong-matching-service-00003-28t/udnsjnd/seongandong-matching-api:latest'
+      ]
+
+  # 3. Cloud Run으로 배포
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      [
+        'run',
+        'deploy',
+        'seongandong-matching-api',        # Cloud Run 서비스 이름
+        '--image',
+        'asia-northeast3-docker.pkg.dev/seongandong-matching-service-00003-28t/udnsjnd/seongandong-matching-api:latest',
+        '--region',
+        'asia-northeast3',
+        '--platform',
+        'managed',
+        '--allow-unauthenticated'
+      ]
+
+images:
+  - 'asia-northeast3-docker.pkg.dev/seongandong-matching-service-00003-28t/udnsjnd/seongandong-matching-api:latest'
+
+# 사용자 지정 서비스 계정을 쓸 때 필수인 로그 옵션
+options:
+  logging: CLOUD_LOGGING_ONLY
