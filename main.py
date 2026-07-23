@@ -12,7 +12,7 @@ if not GOOGLE_API_KEY:
 
 genai.configure(api_key=GOOGLE_API_KEY)
 
-MODEL_NAME = "gemini-1.5-flash"
+MODEL_NAME = "gemini-1.5-flash-001"
 model = genai.GenerativeModel(MODEL_NAME)
 
 SYSTEM_INSTRUCTION = """
