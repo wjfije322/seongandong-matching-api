@@ -196,7 +196,5 @@ def health():
     return "성안동 빈상가 추천 API (Cloud Run)"
 
 if __name__ == "__main__":
-    # 로컬 실행 시에는 기본 8000포트,
-    # Cloud Run에서는 PORT 환경변수를 사용.
-    port = int(os.environ.get("PORT", 8000))
+    port = int(os.environ.get("PORT", 8080))
     app.run(host="0.0.0.0", port=port)
