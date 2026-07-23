@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify
+from flask import Flask
 import google.generativeai as genai
 
 app = Flask(__name__)
@@ -192,8 +192,8 @@ def recommend():
     })
 
 @app.route("/")
-def health():
-    return "성안동 빈상가 추천 API (Cloud Run)"
+def index():
+    return "OK"
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
